@@ -27,4 +27,8 @@
             </plugin>
 		</plugins>
 	</build>
+	<scm>
+		<connection>scm:svn:http://chrome-jira-notifier.googlecode.com/svn/trunk</connection>
+		<developerConnection>scm:svn:http://chrome-jira-notifier.googlecode.com/svn/trunk</developerConnection>
+	</scm>
 </project>
