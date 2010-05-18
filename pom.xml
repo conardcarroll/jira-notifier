@@ -32,4 +32,10 @@
 		<developerConnection>scm:svn:https://chrome-jira-notifier.googlecode.com/svn/trunk</developerConnection>
 		<url>https://chrome-jira-notifier.googlecode.com/svn/trunk</url>
 	</scm>
+	<distributionManagement>
+		<repository>
+			<id>chrome-jira-notifier</id>
+			<url>dav:https://chrome-jira-notifier.googlecode.com/svn/maven2/releases</url>
+		</repository>
+	</distributionManagement>
 </project>
