@@ -29,7 +29,7 @@
 	</build>
 	<scm>
 		<connection>scm:svn:http://chrome-jira-notifier.googlecode.com/svn/trunk</connection>
-		<developerConnection>scm:svn:http://chrome-jira-notifier.googlecode.com/svn/trunk</developerConnection>
-		<url>http://chrome-jira-notifier.googlecode.com/svn/trunk</url>
+		<developerConnection>scm:svn:https://chrome-jira-notifier.googlecode.com/svn/trunk</developerConnection>
+		<url>https://chrome-jira-notifier.googlecode.com/svn/trunk</url>
 	</scm>
 </project>
