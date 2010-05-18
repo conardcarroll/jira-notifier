@@ -8,7 +8,16 @@
       display: none;
       font-family: Arial, sans-serif;
       font-size: 12px;
+      width: 600px;
     }
+	
+	table {
+		max-width: 600px;
+	}
+	
+	td {
+		max-width: 400px;
+	}	
 	
 	td.rightAlign {
 		align: right;
@@ -43,7 +52,6 @@
 
     #content {
 	  padding-top: 5px;
-      width: 500px;
     }
 	
 	#quick-search {
@@ -52,23 +60,18 @@
 		text-align: right;
 		width: 100%;
 	}
+	
+	#footer {
+		clear: both;
+		width: 100%;
+	}
 
     .message {
-      position: absolute;
-      width: 500px;
       text-align: center;
       font-family: Helvetica, Arial, sans-serif;
       font-size: 14px;
       font-weight: bold;
       color: #aaa;
-    }
-
-    #module {
-      position: absolute;
-      top: 0;
-      left: 0;
-      border: 0;
-      overflow: hidden;
     }
   </style>
   <script type="text/javascript" src="prefs.js"></script>
@@ -105,12 +108,14 @@
       });
     }
 
-    function setContent() {
+    function setContent(start) {
+		var content = document.getElementById('content');
 		chrome.extension.getBackgroundPage().startRequest();
-		chrome.extension.getBackgroundPage().getTable(function(table) {
-			document.getElementById('content').innerHTML = table;
-		});
-		
+		chrome.extension.getBackgroundPage().getTable(start, function(table) {
+			content.innerHTML = table;
+		}, function() {
+			content.innerHTML = '<div class="message">Could not retrieve JIRA issues.</div>';
+		});		
     }
 	
 	function quickSearch() {

@@ -4,6 +4,7 @@
 <script>
 var REQUEST_TIMEOUT_MS_ = 5 * 1000;
 var FEED_URL = "/sr/jira.issueviews:searchrequest-xml/temp/SearchRequest.xml?field=key&field=summary&field=description&field=link&field=type&field=priority&jqlQuery=";
+var RESULTS_PER_PAGE = 10;
 
 
 var requestTimeout;
@@ -64,6 +65,7 @@ function init() {
 	xhr.send(null);
 	var xsl = xhr.responseXML;
 	processor.importStylesheet(xsl);
+	processor.setParameter(null, "perPage", RESULTS_PER_PAGE);
 
 	startRequest();
 }
@@ -159,7 +161,7 @@ function getIssueCount(onSuccess, onError) {
 	}
 }
 
-function getTable(onSuccess, onError) {
+function getTable(start, onSuccess, onError) {
 	var xhr = new XMLHttpRequest();
 	var abortTimerId = window.setTimeout(function() {
 		xhr.abort();  // synchronously calls onreadystatechange
@@ -199,7 +201,7 @@ function getTable(onSuccess, onError) {
 			handleError();
 		}
 
-		xhr.open("GET", getFeedUrl(getMaxResults()), true);
+		xhr.open("GET", getFeedUrl(RESULTS_PER_PAGE) + "&pager/start=" + start, true);
 		xhr.send(null);
 	} catch(e) {
 		handleError();

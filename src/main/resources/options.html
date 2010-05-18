@@ -67,10 +67,6 @@
         refreshIntervalNode.children[refreshIntervalNode.selectedIndex].value;
     setRefreshInterval(refreshInterval);
 	
-	var maxResultsNode = formNode['max-results'];
-	var maxResults = maxResultsNode.children[maxResultsNode.selectedIndex].value;
-	setMaxResults(maxResults);
-	
 	var jiraUrlNode = formNode['jira-url'];
 	var jiraUrl = jiraUrlNode.value;
 	setJiraUrl(jiraUrl);
@@ -96,10 +92,6 @@
     var refreshInterval = getRefreshInterval();
     var refreshIntervalNode = formNode['refresh-interval'];
 	findSelectedIndex(refreshInterval, refreshIntervalNode);
-	
-	var maxResults = getMaxResults();
-	var maxResultsNode = formNode['max-results'];
-	findSelectedIndex(maxResults, maxResultsNode);
 	
 	var jiraUrl = getJiraUrl();
 	var jiraUrlNode = formNode['jira-url'];
@@ -134,14 +126,6 @@
 		errorMessage.style.display = "";
 		buttonNode.disabled = true;
 	});
-  }
-  
-  function checkMaxResults() {
-    var formNode = document.getElementById('options-form');
-	var maxResultsNode = formNode['max-results'];
-	var maxResults = maxResultsNode.children[maxResultsNode.selectedIndex].value;
-	var maxResultsMessage = document.getElementById('max-results-message');
-	maxResultsMessage.style.display = ((maxResults > 25) ? '' : 'none');
   }
   
   function toggleQuery() {
@@ -182,18 +166,6 @@ Comments/critiques/suggestions.  <a href="mailto: dmorgan81+extension@gmail.com?
         <option value="1800000">30 minutes</option>
       </select>
     </td>
-  </tr>
-  <tr>
-	<td class="label">Max # of Results:</td>
-	<td>
-	  <select name="max-results" onchange="checkMaxResults()">
-        <option value="10">10</option>
-        <option value="25">25</option>
-        <option value="50">50</option>
-        <option value="100">100</option>
-      </select>
-	  <span id="max-results-message" class="error" style="display:none">This could adversely affect performance.</span>
-	</td>
   </tr>
   <tr>
 	<td class="label">
