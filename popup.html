@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style type="text/css">
+    body {
+      padding: 0;
+      margin: 0;
+      display: none;
+      font-family: Arial, sans-serif;
+      font-size: 12px;
+    }
+	
+	td.rightAlign {
+		align: right;
+	}
+
+    .link {
+      color: #68d;
+      cursor: pointer;
+      text-decoration: underline;
+    }
+	
+	.key {
+		font-weight: bold;
+	}
+
+    .title {
+	  font-size: 14px;
+	  cursor: pointer;
+    }
+	
+	.rowAlternate {
+		background-color: #F2F2F2;
+	}
+	
+	.faded {
+		color: #999;
+	}
+
+    #container {
+      position: relative;
+    }
+
+    #content {
+	  padding-top: 5px;
+      width: 500px;
+    }
+	
+	#quick-search {
+		border: 1px solid #F2F2F2;
+		font-size: 1em;
+		text-align: right;
+		width: 100%;
+	}
+
+    .message {
+      position: absolute;
+      width: 500px;
+      text-align: center;
+      font-family: Helvetica, Arial, sans-serif;
+      font-size: 14px;
+      font-weight: bold;
+      color: #aaa;
+    }
+
+    #module {
+      position: absolute;
+      top: 0;
+      left: 0;
+      border: 0;
+      overflow: hidden;
+    }
+  </style>
+  <script type="text/javascript" src="prefs.js"></script>
+  <script type="text/javascript">  
+	var JIRA_URL_RE_ = /https?\:\/\/.*\/jira\//;
+	var QUICK_SEARCH_URL_ = "/secure/QuickSearch.jspa?searchString=";
+  
+	function getJiraTab(callback) {
+		chrome.tabs.getAllInWindow(undefined, function(tabs) {
+			for (var i = 0, tab; tab = tabs[i]; i++) {
+				if (tab.url && JIRA_URL_RE_.test(tab.url)) {
+					callback(tab);
+					return;
+				}
+			}
+			callback(null);
+		});
+	}
+  
+    function init() {	
+        // Show the body so that the popup is actually visible
+        document.body.style.display = 'block';
+        setContent();
+    }
+
+    function openJira(jiraUrl) {
+        getJiraTab(function(tab) {
+			if (tab) {
+				chrome.tabs.update(tab.id, {selected: true, url: jiraUrl});
+			} else {
+				chrome.tabs.create({url: jiraUrl});
+			}
+			window.close();
+      });
+    }
+
+    function setContent() {
+		chrome.extension.getBackgroundPage().startRequest();
+		chrome.extension.getBackgroundPage().getTable(function(table) {
+			document.getElementById('content').innerHTML = table;
+		});
+		
+    }
+	
+	function quickSearch() {
+		var quickSearch = document.getElementById('quick-search').value;
+		openJira(getJiraUrl() + QUICK_SEARCH_URL_ + quickSearch);
+	}
+  </script>
+</head>
+<body onload="init();">
+  <div id="container">
+    <div id="content">
+		<div class="message">Loading...</div>
+    </div>
+  </div>
+</body>
+</html>
