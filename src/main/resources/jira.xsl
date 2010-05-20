@@ -7,7 +7,7 @@
     <xsl:param name="perPage"/>
     <xsl:template match="/rss/channel">
         <div>
-            <table width="100%">
+            <table id="header" width="100%">
                 <tr>
                     <td>
                         <span onclick="openJira(getJiraUrl());">
@@ -35,28 +35,45 @@
                     </div>
                 </xsl:when>
                 <xsl:otherwise>
-                    <div id="footer">
-                        <xsl:if test="$start &gt; 0">
-                            <span class="link" style="float:left">
-                                <xsl:attribute name="onclick">
-                                    <xsl:text>setContent(</xsl:text>
-                                    <xsl:value-of select="$start - $perPage"/>
-                                    <xsl:text>);</xsl:text>
-                                </xsl:attribute>
-                                <xsl:text>&lt; Prev</xsl:text>
-                            </span>
-                        </xsl:if>
-                        <xsl:if test="$end &lt; $total">
-                            <span class="link" style="float:right">
-                                <xsl:attribute name="onclick">
-                                    <xsl:text>setContent(</xsl:text>
-                                    <xsl:value-of select="$start + $perPage"/>
-                                    <xsl:text>);</xsl:text>
-                                </xsl:attribute>
-                                <xsl:text>Next &gt;</xsl:text>
-                            </span>
-                        </xsl:if>
-                    </div>
+                    <table width="100%" style="table-layout:fixed">
+                        <tr>
+                            <td>
+                                <xsl:if test="$start &gt; 0">
+                                    <span class="link" style="float:left">
+                                        <xsl:attribute name="onclick">
+                                            <xsl:text>setContent(</xsl:text>
+                                            <xsl:value-of select="$start - $perPage"/>
+                                            <xsl:text>);</xsl:text>
+                                        </xsl:attribute>
+                                        <xsl:text>&lt; Prev</xsl:text>
+                                    </span>
+                                </xsl:if>
+                            </td>
+                            <td align="center">
+                                <xsl:if test="$total &gt; $perPage">
+                                    <span style="align:center">
+                                        <xsl:value-of select="$start + 1"/>
+                                        <xsl:text>-</xsl:text>
+                                        <xsl:value-of select="$end"/>
+                                        <xsl:text> of </xsl:text>
+                                        <xsl:value-of select="$total"/>
+                                    </span>
+                                </xsl:if>
+                            </td>
+                            <td>
+                                <xsl:if test="$end &lt; $total">
+                                    <span class="link" style="float:right">
+                                        <xsl:attribute name="onclick">
+                                            <xsl:text>setContent(</xsl:text>
+                                            <xsl:value-of select="$start + $perPage"/>
+                                            <xsl:text>);</xsl:text>
+                                        </xsl:attribute>
+                                        <xsl:text>Next &gt;</xsl:text>
+                                    </span>
+                                </xsl:if>
+                            </td>
+                        </tr>
+                    </table>
                     <table width="100%">
                         <tr class="rowAlternate">
                             <th>T</th>
