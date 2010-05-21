@@ -48,11 +48,11 @@ LoadingAnimation.prototype.stop = function() {
 function init() {
 	chrome.browserAction.setBadgeBackgroundColor({color: COLOR_RED_});
 	chrome.browserAction.setIcon({path: 'img/icon-signed-in.png'});
+	LOADING_ANIMATION_.start();
 	startRequest_();
 }
 
 function startRequest_() {
-	LOADING_ANIMATION_.start();
 	$.ajax({
 		url: getFeedUrl(0),
 		complete: function (xhr, status) {
@@ -88,8 +88,10 @@ function updateIssueCount_(count) {
 		if (issueCount_ > 0) {
 			chrome.browserAction.setBadgeText({text: issueCount_ + ''});
 			chrome.browserAction.setBadgeBackgroundColor({color: COLOR_RED_});
-		} else {
-			chrome.browserAction.setBadgeText({text: ''});
+			return;
 		}
+	}
+	if (issueCount == 0) {
+		chrome.browserAction.setBadgeText({text: ''});
 	}
 }
