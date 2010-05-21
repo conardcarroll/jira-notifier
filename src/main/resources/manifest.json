@@ -1,16 +1,16 @@
 ﻿{
 	"name": "Chrome JIRA Notifier",
-	"version": "${project.version}",
+	"version": "1.5",
 	"description": "Checks JIRA for issues assigned to you.",
 	"permissions": [ "tabs", "http://*/*", "https://*/*" ],
 	"icons": {
-      "128": "icon-128.png",
-      "16": "icon-16.png",
-      "32": "icon-32.png",
-      "64": "icon-64.png"
+      "128": "img/icon-128.png",
+      "16": "img/icon-16.png",
+      "32": "img/icon-32.png",
+      "64": "img/icon-64.png"
    },
    "browser_action": {
-      "default_icon": "icon-signed-out.png",
+      "default_icon": "img/icon-signed-out.png",
       "popup": "popup.html"
    },
    "background_page": "background.html",

@@ -1,188 +1,104 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>Chrome JIRA Notifier Options</title>
-  <style type="text/css">
-    body {
-      font-family: arial, sans-serif;
-      font-size: smaller;
-    }
+	<head>
+		<title>Chrome JIRA Notifier Options</title>
+		<style type="text/css">
+			body {
+				font-family: arial, sans-serif;
+				font-size: smaller;
+			}
 
-    td {
-      padding: 5px;
-    }
-	
-	.textbox {
-		width: 300px;
-	}
+			td {
+				padding: 5px;
+			}
 
-    #header {
-		padding-top:1.5em;
-		border-bottom:1px solid #b5c7de;
-	}
+			.textbox {
+				width: 300px;
+			}
 
-	#header h1 {
-		font-size: 156%;
-		display:inline;
-		padding-bottom:43px;
-		padding-left:50px;
-		padding-top:40px;
-		background:url(icon-128.png) no-repeat;
-		background-size:45px;
-		background-position:1px 18px;
-	}
-	
-	#query {
-		
-	}
+			#header {
+				padding-top:1.5em;
+				border-bottom:1px solid #b5c7de;
+			}
 
-    .label {
-      text-align: left;
-    }
+			#header h1 {
+				font-size: 156%;
+				display:inline;
+				padding-bottom:43px;
+				padding-left:50px;
+				padding-top:40px;
+				background:url(img/icon-128.png) no-repeat;
+				background-size:45px;
+				background-position:1px 18px;
+			}
 
-    .buttons {
-      text-align: left;
-      padding-top: 1em;
-    }
-	
-	.error {
-		color: red;
-	}
-	
-	.link {
-      color: #68d;
-      cursor: pointer;
-      text-decoration: underline;
-    }
-  </style>
-  <script type="text/javascript" src="prefs.js"></script>
-  <script type="text/javascript">
+			.label {
+				text-align: left;
+			}
 
-  // Saves options to localStorage.
-  function saveOptions() {
-    var formNode = document.getElementById('options-form');
+			.buttons {
+				text-align: left;
+				padding-top: 1em;
+			}
 
-    var refreshIntervalNode = formNode['refresh-interval'];
-    var refreshInterval =
-        refreshIntervalNode.children[refreshIntervalNode.selectedIndex].value;
-    setRefreshInterval(refreshInterval);
-	
-	var jiraUrlNode = formNode['jira-url'];
-	var jiraUrl = jiraUrlNode.value;
-	setJiraUrl(jiraUrl);
-	
-	var queryNode = formNode['query'];
-	var query = queryNode.value;
-	setQuery(query);
+			.error {
+				color: red;
+			}
 
-    // Update status to let user know options were saved.
-    var buttonNode = document.getElementById('save-button');
-    buttonNode.innerHTML = 'Saved';
-    buttonNode.disabled = true;
-    setTimeout(function() {
-      buttonNode.innerHTML = 'Save';
-      buttonNode.disabled = false;
-    }, 750);
-	chrome.extension.getBackgroundPage().init();
-  }
-
-  function restoreOptions() {
-    var formNode = document.getElementById('options-form');
-
-    var refreshInterval = getRefreshInterval();
-    var refreshIntervalNode = formNode['refresh-interval'];
-	findSelectedIndex(refreshInterval, refreshIntervalNode);
-	
-	var jiraUrl = getJiraUrl();
-	var jiraUrlNode = formNode['jira-url'];
-	jiraUrlNode.value = jiraUrl;
-	
-	var query = getQuery();
-	var queryNode = formNode['query'];
-	queryNode.value = query;
-  }
-  
-  function findSelectedIndex(value, node) {
-	for (var i = 0, nodeValue; nodeValue = node[i]; i++) {
-		if (nodeValue.value == value) {
-			nodeValue.selected = 'true';
-			break;
-		}
-	}
-  }
-  
-  function checkJiraUrl() {
-	var jiraUrlNode = document.getElementById('jira-url');
-	var errorMessage = document.getElementById('error-message');
-	var buttonNode = document.getElementById('save-button');
-	var jiraUrl = jiraUrlNode.value;
-	chrome.extension.getBackgroundPage().isJiraUrl(jiraUrl, function() {
-		jiraUrlNode.className = "textbox";
-		errorMessage.style.display = "none";
-		buttonNode.disabled = false;
-	},
-	function() {
-		jiraUrlNode.className = "textbox error";
-		errorMessage.style.display = "";
-		buttonNode.disabled = true;
-	});
-  }
-  
-  function toggleQuery() {
-	var query = document.getElementById('query');
-	var queryCheckbox = document.getElementById('query-checkbox');
-	var queryMessage = document.getElementById('query-message');
-	query.disabled = !queryCheckbox.checked;
-	queryMessage.style.display = (queryCheckbox.checked ? '' : 'none');
-  }
-  
-  </script>
-</head>
-
-<body onload="restoreOptions()">
-
-<div id="header"><h1>Chrome JIRA Notifier Options</h1></div>
-<div>
-Comments/critiques/suggestions.  <a href="mailto: dmorgan81+extension@gmail.com?subject=Chrome%20JIRA%20Notifier">Email me!</a>
-</div>
-
-<form id="options-form">
-
-<table>
-  <tr>
-	<td class="label">JIRA URL:</td>
-	<td>
-		<input type="text" id="jira-url" onchange="checkJiraUrl()" class="textbox"/>
-		<span id="error-message" class="error" style="display:none">Not a JIRA site.</span>
-	</td>
-  </tr>
-  <tr>
-    <td class="label">Update every:</td>
-    <td>
-      <select name="refresh-interval">
-        <option value="300000">5 minutes</option>
-        <option value="600000">10 minutes</option>
-        <option value="900000">15 minutes</option>
-        <option value="1800000">30 minutes</option>
-      </select>
-    </td>
-  </tr>
-  <tr>
-	<td class="label">
-		<input id="query-checkbox" type="checkbox" onclick="toggleQuery()">Query:</input>
-	</td>
-	<td>
-		<input type="text" id="query" disabled="true" class="textbox"/>
-		<span id="query-message" class="error" style="display:none">Change this only if you know what you are doing!</span>
-	</td>
-  </tr>
-</table>
-</div>
-    <div class="buttons">
-      <button onclick="saveOptions()" id="save-button">Save</button>
-    </div>
-
-</form>
-
-</body>
+			.link {
+				color: #68d;
+				cursor: pointer;
+				text-decoration: underline;
+			}
+		</style>
+		<script type="text/javascript" src="js/jquery.js" />
+		<script type="text/javascript" src="js/prefs.js" />
+		<script type="text/javascript" src="js/options.js" />
+		<script type="text/javascript">
+			$(document).ready(restoreOptions);
+		</script>
+	</head>
+	<body>
+		<div id="header">
+			<h1>Chrome JIRA Notifier Options</h1>
+		</div>
+		<div>
+			Comments/critiques/suggestions.
+			<a href="mailto: dmorgan81+extension@gmail.com?subject=Chrome%20JIRA%20Notifier">Email me!</a>
+		</div>
+		<form id="options-form">
+			<table>
+				<tr>
+					<td class="label">JIRA URL:</td>
+					<td>
+						<input type="text" id="jira-url" onchange="checkJiraUrl()" class="textbox"/>
+						<span id="jira-message" class="error" style="display:none">Not a JIRA site.</span>
+					</td>
+				</tr>
+				<tr>
+					<td class="label">Update every:</td>
+					<td>
+						<select id="refresh-interval">
+							<option value="300000">5 minutes</option>
+							<option value="600000">10 minutes</option>
+							<option value="900000">15 minutes</option>
+							<option value="1800000">30 minutes</option>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td class="label">
+						<input id="query-checkbox" type="checkbox" onclick="toggleQuery()">Query:</input>
+					</td>
+					<td>
+						<input type="text" id="query" disabled="true" class="textbox"/>
+						<span id="query-message" class="error" style="display:none">Change this only if you know what you are doing!</span>
+					</td>
+				</tr>
+			</table>
+			<div class="buttons">
+				<button onclick="saveOptions()" id="save-button">Save</button>
+			</div>
+		</form>
+	</body>
 </html>

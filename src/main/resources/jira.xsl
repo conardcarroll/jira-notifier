@@ -1,16 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
     <xsl:output indent="no" omit-xml-declaration="yes"/>
-    <xsl:param name="total" select="/rss/channel/issue/@total"/>
-    <xsl:param name="start" select="/rss/channel/issue/@start"/>
-    <xsl:param name="end" select="/rss/channel/issue/@end"/>
-    <xsl:param name="perPage"/>
     <xsl:template match="/rss/channel">
         <div>
             <table id="header" width="100%">
                 <tr>
                     <td>
-                        <span onclick="openJira(getJiraUrl());">
+                        <span onclick="openJiraTab(getJiraUrl());">
                             <xsl:attribute name="class">
                                 <xsl:value-of select="local-name(title)"/>
                             </xsl:attribute>
@@ -35,6 +31,9 @@
                     </div>
                 </xsl:when>
                 <xsl:otherwise>
+					<xsl:variable name="total" select="/rss/channel/issue/@total"/>
+					<xsl:variable name="start" select="/rss/channel/issue/@start"/>
+					<xsl:variable name="end" select="/rss/channel/issue/@end"/>
                     <table width="100%" style="table-layout:fixed">
                         <tr>
                             <td>
@@ -42,7 +41,7 @@
                                     <span class="link" style="float:left">
                                         <xsl:attribute name="onclick">
                                             <xsl:text>setContent(</xsl:text>
-                                            <xsl:value-of select="$start - $perPage"/>
+                                            <xsl:value-of select="$start - 10"/>
                                             <xsl:text>);</xsl:text>
                                         </xsl:attribute>
                                         <xsl:text>&lt; Prev</xsl:text>
@@ -50,7 +49,7 @@
                                 </xsl:if>
                             </td>
                             <td align="center">
-                                <xsl:if test="$total &gt; $perPage">
+                                <xsl:if test="$total &gt; 10">
                                     <span style="align:center">
                                         <xsl:value-of select="$start + 1"/>
                                         <xsl:text>-</xsl:text>
@@ -65,7 +64,7 @@
                                     <span class="link" style="float:right">
                                         <xsl:attribute name="onclick">
                                             <xsl:text>setContent(</xsl:text>
-                                            <xsl:value-of select="$start + $perPage"/>
+                                            <xsl:value-of select="$start + 10"/>
                                             <xsl:text>);</xsl:text>
                                         </xsl:attribute>
                                         <xsl:text>Next &gt;</xsl:text>
@@ -112,7 +111,7 @@
                                             <xsl:text> link</xsl:text>
                                         </xsl:attribute>
                                         <xsl:attribute name="onclick">
-                                            <xsl:text>openJira('</xsl:text>
+                                            <xsl:text>openJiraTab('</xsl:text>
                                             <xsl:value-of select="../link"/>
                                             <xsl:text>')</xsl:text>
                                         </xsl:attribute>
