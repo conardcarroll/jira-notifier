@@ -2,55 +2,8 @@
 <html>
 	<head>
 		<title>Chrome JIRA Notifier Options</title>
-		<style type="text/css">
-			body {
-				font-family: arial, sans-serif;
-				font-size: smaller;
-			}
-
-			td {
-				padding: 5px;
-			}
-
-			.textbox {
-				width: 300px;
-			}
-
-			#header {
-				padding-top:1.5em;
-				border-bottom:1px solid #b5c7de;
-			}
-
-			#header h1 {
-				font-size: 156%;
-				display:inline;
-				padding-bottom:43px;
-				padding-left:50px;
-				padding-top:40px;
-				background:url(img/icon-128.png) no-repeat;
-				background-size:45px;
-				background-position:1px 18px;
-			}
-
-			.label {
-				text-align: left;
-			}
-
-			.buttons {
-				text-align: left;
-				padding-top: 1em;
-			}
-
-			.error {
-				color: red;
-			}
-
-			.link {
-				color: #68d;
-				cursor: pointer;
-				text-decoration: underline;
-			}
-		</style>
+		<link rel="stylesheet" type="text/css" href="css/main.css" />
+		<link rel="stylesheet" type="text/css" href="css/options.css">
 		<script type="text/javascript" src="js/jquery.js" />
 		<script type="text/javascript" src="js/prefs.js" />
 		<script type="text/javascript" src="js/options.js" />
@@ -86,17 +39,22 @@
 						</select>
 					</td>
 				</tr>
-				<tr>
-					<td class="label">
-						<input id="query-checkbox" type="checkbox" onclick="toggleQuery()">Query:</input>
+				<tr class="advanced" style="display: inline">
+					<td colspan="2">
+						Advanced (<span onclick="toggleAdvanced()" class="link">Show</span>)
 					</td>
+				</tr>
+				<tr class="advanced">
+					<td colspan="2" class="error">Change these only if you know what you are doing!</td>
+				</tr>
+				<tr class="advanced">
+					<td class="label">Query:</td>
 					<td>
-						<input type="text" id="query" disabled="true" class="textbox"/>
-						<span id="query-message" class="error" style="display:none">Change this only if you know what you are doing!</span>
+						<input type="text" id="query" class="textbox"/>						
 					</td>
 				</tr>
 			</table>
-			<div class="buttons">
+			<div class="button">
 				<button onclick="saveOptions()" id="save-button">Save</button>
 			</div>
 		</form>

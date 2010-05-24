@@ -1,0 +1,43 @@
+body {
+	font-family: Arial, sans-serif;
+	font-size: 12px;
+}
+
+.textbox {
+	width: 300px;
+}
+
+.label {
+	text-align: left;
+}
+
+.button {
+	text-align: left;
+	padding-top: 1em;
+}
+
+.error {
+	color: red;
+}
+
+.link {
+	color: #68d;
+	cursor: pointer;
+	text-decoration: underline;
+}
+
+.bold {
+	font-weight: bold;
+}
+
+.alternate {
+	background-color: #F2F2F2;
+}
+
+.faded {
+	color: #999;
+}
+
+.rightAlign {
+	align: right;
+}

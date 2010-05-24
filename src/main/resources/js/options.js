@@ -45,15 +45,6 @@ function checkJiraUrl() {
 	});
 }
 
-function toggleQuery() {
-	var $query = $('#query');
-	var $queryMessage = $('#query-message');
-	if ($('#query-checkbox:checked').val()) {
-		$query.removeAttr('disabled');
-		$queryMessage.show();
-	} else {
-		$query.attr('disabled', 'disabled');
-		$queryMessage.hide();
-	}
-	
+function toggleAdvanced() {
+	$('.advanced').toggle();
 }

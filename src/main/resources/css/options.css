@@ -1,0 +1,23 @@
+﻿td {
+	padding: 5px;
+}
+
+.advanced {
+	display: none;
+}
+
+#header {
+	padding-top:1.5em;
+	border-bottom:1px solid #b5c7de;
+}
+
+#header h1 {
+	font-size: 156%;
+	display:inline;
+	padding-bottom:43px;
+	padding-left:50px;
+	padding-top:40px;
+	background:url(../img/icon-128.png) no-repeat;
+	background-size:45px;
+	background-position:1px 18px;
+}

@@ -14,7 +14,7 @@
                         </span>
                     </td>
                     <td>
-                        <input id="quick-search" onchange="quickSearch();" value="Quick Search"
+                        <input id="quick-search" onchange="if (value != '') quickSearch();" value="Quick Search"
                             class="faded" onclick="value = ''; className = '';"
                             onblur="if (value == '') value = 'Quick Search'; className = 'faded'; "
                         />
@@ -74,7 +74,7 @@
                         </tr>
                     </table>
                     <table width="100%">
-                        <tr class="rowAlternate">
+                        <tr class="alternate">
                             <th>T</th>
                             <th>Key</th>
                             <th>Summary</th>
@@ -92,7 +92,7 @@
                                 </xsl:if>
                                 <xsl:if test="position() mod 2 = 0">
                                     <xsl:attribute name="class">
-                                        <xsl:text>rowAlternate</xsl:text>
+                                        <xsl:text>alternate</xsl:text>
                                     </xsl:attribute>
                                 </xsl:if>
                                 <xsl:if test="type/@iconUrl">
