@@ -19,7 +19,6 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <appendAssemblyId>false</appendAssemblyId>
                     <descriptors>
                         <descriptor> src/assembly/assembly.xml </descriptor>
                     </descriptors>
