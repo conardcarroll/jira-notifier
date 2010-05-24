@@ -82,16 +82,14 @@ function showLoggedOut_() {
 }
 
 function updateIssueCount_(count) {
-	if (issueCount_ != count) {
-		issueCount_ = count;
-		chrome.browserAction.setIcon({path: 'img/icon-signed-in.png'});
-		if (issueCount_ > 0) {
-			chrome.browserAction.setBadgeText({text: issueCount_ + ''});
-			chrome.browserAction.setBadgeBackgroundColor({color: COLOR_RED_});
-			return;
-		}
+	issueCount_ = count;
+	chrome.browserAction.setIcon({path: 'img/icon-signed-in.png'});
+	if (issueCount_ > 0) {
+		chrome.browserAction.setBadgeText({text: issueCount_ + ''});
+		chrome.browserAction.setBadgeBackgroundColor({color: COLOR_RED_});
+		return;
 	}
-	if (issueCount == 0) {
+	if (issueCount_ == 0) {
 		chrome.browserAction.setBadgeText({text: ''});
 	}
 }
