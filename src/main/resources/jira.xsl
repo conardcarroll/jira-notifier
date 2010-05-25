@@ -95,40 +95,40 @@
                                         <xsl:text>alternate</xsl:text>
                                     </xsl:attribute>
                                 </xsl:if>
-                                <xsl:if test="type/@iconUrl">
-                                    <td>
-                                        <img>
-                                            <xsl:attribute name="src">
-                                                <xsl:value-of select="type/@iconUrl"/>
-                                            </xsl:attribute>
-                                        </img>
-                                    </td>
-                                </xsl:if>
-                                <xsl:for-each select="key|summary">
-                                    <td>
-                                        <xsl:attribute name="class">
-                                            <xsl:value-of select="local-name(.)"/>
-                                            <xsl:text> link</xsl:text>
-                                        </xsl:attribute>
-                                        <xsl:attribute name="onclick">
-                                            <xsl:text>openJiraTab('</xsl:text>
-                                            <xsl:value-of select="../link"/>
-                                            <xsl:text>')</xsl:text>
-                                        </xsl:attribute>
-                                        <span>
-                                            <xsl:value-of select="."/>
-                                        </span>
-                                    </td>
-                                </xsl:for-each>
-                                <xsl:if test="priority/@iconUrl">
-                                    <td class="rightAlign">
-                                        <img>
-                                            <xsl:attribute name="src">
-                                                <xsl:value-of select="priority/@iconUrl"/>
-                                            </xsl:attribute>
-                                        </img>
-                                    </td>
-                                </xsl:if>
+								<td align="center">
+									<img>
+										<xsl:attribute name="src">
+											<xsl:value-of select="type/@iconUrl"/>
+										</xsl:attribute>
+									</img>
+								</td>
+								<td class="bold link" align="center">
+									<xsl:attribute name="onclick">
+										<xsl:text>openJiraTab('</xsl:text>
+										<xsl:value-of select="link"/>
+										<xsl:text>')</xsl:text>
+									</xsl:attribute>
+									<span>
+										<xsl:value-of select="key"/>
+									</span>
+								</td>
+								<td class="link">
+									<xsl:attribute name="onclick">
+										<xsl:text>openJiraTab('</xsl:text>
+										<xsl:value-of select="link"/>
+										<xsl:text>')</xsl:text>
+									</xsl:attribute>
+									<span>
+										<xsl:value-of select="summary"/>
+									</span>
+								</td>
+								<td align="center">
+									<img>
+										<xsl:attribute name="src">
+											<xsl:value-of select="priority/@iconUrl"/>
+										</xsl:attribute>
+									</img>
+								</td>
                             </tr>
                         </xsl:for-each>
                     </table>
