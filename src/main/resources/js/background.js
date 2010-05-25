@@ -82,6 +82,10 @@ function showLoggedOut_() {
 }
 
 function updateIssueCount_(count) {
+	if (!count) {
+		showLoggedOut_();
+		return;
+	}
 	issueCount_ = count;
 	chrome.browserAction.setIcon({path: 'img/icon-signed-in.png'});
 	if (issueCount_ > 0) {
