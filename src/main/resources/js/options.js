@@ -8,7 +8,16 @@ function saveOptions() {
 		$saveButton.removeAttr('disabled');
 		$saveButton.text('Save');
 	}, 750);
-	setJiraUrl($('#jira-url').val());
+	
+	var $jiraUrl = $('#jira-url');
+	var $jiraSelect = $('#jira-url-select');
+	var url;
+	if ($jiraUrl.is(':hidden')) {
+		url = $jiraSelect.val();
+	} else {
+		url = $jiraUrl.val();
+	}	
+	setJiraUrl(url);
 	
 	var $filters = $('#filters');
 	setFilterId($filters.val());
@@ -19,14 +28,33 @@ function saveOptions() {
 }
 
 function restoreOptions() {
-	$('#jira-url').val(getJiraUrl());
+	var jiraUrl = getJiraUrl();
+	$('#jira-url').val(jiraUrl);
 	$('#refresh-interval').val(getRefreshInterval());
-	updateFilters(false);
+	updateJiraSelect(jiraUrl);
+	updateFilters(jiraUrl);
 	$('#filters').val(getFilterId());
 }
 
-function updateFilters() {
-	var url = $('#jira-url').val();
+function updateJiraSelect(jiraUrl) {
+	chrome.history.search({'text': 'jira AND secure'}, function(results) {
+		var $jiraSelect = $('#jira-url-select');
+		$jiraSelect.children().remove();
+		for (var i = 0; i < results.length; i++) {
+			var historyItem = results[i];
+			var url = historyItem.url;
+			var title = historyItem.title;
+			if (url && title && url.indexOf('/secure/Dashboard') != -1) {
+				title = title.substring(title.lastIndexOf('-') + 2);
+				url = url.substring(0, url.lastIndexOf('/secure'));
+				$jiraSelect.append($('<option></option>').val(url).html(title));
+			}
+		}
+		$jiraSelect.val(jiraUrl);
+	});
+}
+
+function updateFilters(url) {		
 	var $filters = $('#filters');
 	$filters.children().remove();
 	
@@ -52,10 +80,11 @@ function updateFilters() {
 	});
 }
 
-function checkJiraUrl() {
+function checkJiraUrl(selectInput) {
 	var $spinner = $('#spinner');
 	$spinner.show();
-	var $jiraUrl = $('#jira-url');
+	var $jiraUrl = (selectInput ? $('#jira-url-select') : $('#jira-url'));
+	var $otherJiraUrl = (!selectInput ? $('#jira-url-select') : $('#jira-url'));
 	var $jiraMessage = $('#jira-message');
 	var $saveButton = $('#save-button');
 	$.ajax({
@@ -71,9 +100,10 @@ function checkJiraUrl() {
 			}
 			if (valid) {
 				$jiraUrl.removeClass('error');
+				$otherJiraUrl.val($jiraUrl.val());
 				$jiraMessage.hide();
 				$saveButton.removeAttr('disabled');
-				updateFilters();
+				updateFilters($jiraUrl.val());
 			} else {
 				$jiraUrl.addClass('error');
 				$jiraMessage.show();
@@ -83,4 +113,10 @@ function checkJiraUrl() {
 			$spinner.hide();
 		}
 	});
+}
+
+function toggleJira() {
+	$('#jira-url').toggle();
+	$('#jira-url-select').toggle();
+	$('#toggle-jira').html('Select JIRA from history');
 }

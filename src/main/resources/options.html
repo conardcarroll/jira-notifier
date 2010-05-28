@@ -17,14 +17,17 @@
 		</div>
 		<div>
 			Comments/critiques/suggestions.
-			<a href="mailto: dmorgan81+extension@gmail.com?subject=Chrome%20JIRA%20Notifier">Email me!</a>
+			<a class="link" href="mailto: dmorgan81+extension@gmail.com?subject=Chrome%20JIRA%20Notifier">Email me!</a>
 		</div>
 		<form id="options-form">
 			<table>
 				<tr>
-					<td class="label">JIRA URL:</td>
+					<td class="label">JIRA:</td>
 					<td>
-						<input type="text" id="jira-url" class="textbox" onchange="checkJiraUrl()" />
+						<input type="text" id="jira-url" class="textbox" onchange="checkJiraUrl(false)" style="display: none"/>
+						<select id="jira-url-select" onchange="checkJiraUrl(true)">
+						</select>
+						<a id="toggle-jira" class="link" href="" onclick="toggleJira(); return false">Manually enter URL</a>
 						<img id="spinner" src="img/spinner.gif" style="display: none">
 						<span id="jira-message" class="error" style="display:none">Not a JIRA site.</span>
 					</td>
