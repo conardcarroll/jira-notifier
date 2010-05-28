@@ -2,7 +2,9 @@
 var QUICK_SEARCH_URL_ = "/secure/QuickSearch.jspa?searchString=";
 
 function init() {
-    setContent(0);
+	setTimeout(function() {
+		setContent(0);
+	}, 10);
 }
 
 function getJiraTab_(callback) {
@@ -33,13 +35,13 @@ function quickSearch() {
 }
 
 function setContent(start) {
-	chrome.extension.getBackgroundPage().reload();
 	$.ajax({
 		url: getFeedUrl(getPerPage()) + "&pager/start=" + start,
 		complete: function(xhr, status) {
 			if (status == 'success') {
 				var h = chrome.extension.getBackgroundPage().transformToString(xhr.responseXML);
 				$('#content').html(h);
+				chrome.extension.getBackgroundPage().reload();
 			} else {
 				showErrorMessage_();
 			}

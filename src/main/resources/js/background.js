@@ -53,18 +53,20 @@ function init() {
 	chrome.browserAction.setIcon({path: 'img/icon-signed-in.png'});
 	LOADING_ANIMATION_.start();
 	
-	PROCESSOR_ = new XSLTProcessor();
-	$.ajax({
-		url: "jira.xsl",
-		async: false,
-		complete: function(xhr, status) {
-			if (status == 'success') {
-				PROCESSOR_.importStylesheet(xhr.responseXML);
-			} else {
-				showErrorMessage_();
+	if (!PROCESSOR_) {
+		PROCESSOR_ = new XSLTProcessor();
+		$.ajax({
+			url: "jira.xsl",
+			async: false,
+			complete: function(xhr, status) {
+				if (status == 'success') {
+					PROCESSOR_.importStylesheet(xhr.responseXML);
+				} else {
+					showErrorMessage_();
+				}
 			}
-		}
-	});
+		});
+	}
 	
 	startRequest_();
 }

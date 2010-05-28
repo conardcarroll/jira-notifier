@@ -24,7 +24,9 @@
 				<tr>
 					<td class="label">JIRA URL:</td>
 					<td>
-						<input type="text" id="jira-url" class="textbox"/>
+						<input type="text" id="jira-url" class="textbox" onchange="checkJiraUrl()" />
+						<img id="spinner" src="img/spinner.gif" style="display: none">
+						<span id="jira-message" class="error" style="display:none">Not a JIRA site.</span>
 					</td>
 				</tr>
 				<tr>
