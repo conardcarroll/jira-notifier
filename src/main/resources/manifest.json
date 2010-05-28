@@ -2,7 +2,7 @@
 	"name": "Chrome JIRA Notifier",
 	"version": "${project.version}",
 	"description": "Checks JIRA for issues assigned to you.",
-	"permissions": [ "tabs", "http://*/*", "https://*/*" ],
+	"permissions": [ "tabs", "http://*/*", "https://*/*", "history" ],
 	"icons": {
       "128": "img/icon-128.png",
       "16": "img/icon-16.png",
