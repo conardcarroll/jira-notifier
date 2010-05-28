@@ -1,6 +1,4 @@
-﻿var CHECK_URL_ = "/sr/jira.issueviews:searchrequest-xml/temp/SearchRequest.xml?tempMax=0"
-
-function saveOptions() {
+﻿function saveOptions() {
 	var $saveButton = $('#save-button');
 	$saveButton.attr('disabled', 'disabled');
 	$saveButton.text('Saved');
@@ -9,42 +7,42 @@ function saveOptions() {
 		$saveButton.text('Save');
 	}, 750);
 	setJiraUrl($('#jira-url').val());
-	setQuery($('#query').val());
-	setRefreshInterval($('#refresh-interval').val());
+	
+	var $filters = $('#filters');
+	setFilterId($filters.val());
+	setFilterName($filters.find('option:selected').text());
+	setRefreshInterval($('#refresh-interval').val());	
+	
 	chrome.extension.getBackgroundPage().reload();
 }
 
 function restoreOptions() {
 	$('#jira-url').val(getJiraUrl());
-	$('#query').val(getQuery());
 	$('#refresh-interval').val(getRefreshInterval());
+	updateFilters();
+	$('#filters').val(getFilterId());
 }
 
-function checkJiraUrl() {
-	var $jiraUrl = $('#jira-url');
-	var $jiraMessage = $('#jira-message');
-	var $saveButton = $('#save-button');
+function updateFilters() {
+	var url = $('#jira-url').val();
+	var $filters = $('#filters');
+	
 	$.ajax({
-		url: $jiraUrl.val() + CHECK_URL_,
+		url: url + '/secure/ManageFilters.jspa',
+		dataType: 'html',
+		async: false,
 		complete: function(xhr, status) {
-			if (status == 'success') {
-				var xml = xhr.responseXML;
-				console.log(xml);
-				var version = $(xml).find('version').text();
-				if (version.indexOf('4.0') == 0) {
-					$jiraUrl.removeClass('error');
-					$jiraMessage.hide();
-					$saveButton.removeAttr('disabled');
-					return;
+			var $h = $(xhr.responseText);
+			$h.find('a[id^=filterlink]').each(function(index, value) {
+				var id = $(value).attr('id');
+				var pos = id.lastIndexOf('_');
+				if (pos > -1) {
+					id = id.substring(pos + 1);
+					var name = $(value).text();
+					$filters.append($('<option></option>').val(id).html(name));
 				}
-			}
-			$jiraUrl.addClass('error');
-			$jiraMessage.show();
-			$saveButton.attr('disabled', 'disabled');
+			});
+			
 		}
 	});
-}
-
-function toggleAdvanced() {
-	$('.advanced').toggle();
 }

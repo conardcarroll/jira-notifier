@@ -1,25 +1,7 @@
 ﻿var JIRA_URL_RE_ = /https?\:\/\/.*\/jira\//;
 var QUICK_SEARCH_URL_ = "/secure/QuickSearch.jspa?searchString=";
 
-var PROCESSOR_;
-var SERIALIZER_ = new XMLSerializer();
-
 function init() {
-	if (!PROCESSOR_) {
-		PROCESSOR_ = new XSLTProcessor();
-		$.ajax({
-			url: "jira.xsl",
-			async: false,
-			complete: function(xhr, status) {
-				if (status == 'success') {
-					console.log(xhr.responseXML);
-					PROCESSOR_.importStylesheet(xhr.responseXML);
-				} else {
-					showErrorMessage_();
-				}
-			}
-		});
-	}
     setContent(0);
 }
 
@@ -53,11 +35,10 @@ function quickSearch() {
 function setContent(start) {
 	chrome.extension.getBackgroundPage().reload();
 	$.ajax({
-		url: getFeedUrl(10) + "&pager/start=" + start,
+		url: getFeedUrl(getPerPage()) + "&pager/start=" + start,
 		complete: function(xhr, status) {
 			if (status == 'success') {
-				var doc = PROCESSOR_.transformToDocument(xhr.responseXML);
-				var h = SERIALIZER_.serializeToString(doc.documentElement);
+				var h = chrome.extension.getBackgroundPage().transformToString(xhr.responseXML);
 				$('#content').html(h);
 			} else {
 				showErrorMessage_();

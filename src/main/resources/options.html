@@ -24,8 +24,14 @@
 				<tr>
 					<td class="label">JIRA URL:</td>
 					<td>
-						<input type="text" id="jira-url" onchange="checkJiraUrl()" class="textbox"/>
-						<span id="jira-message" class="error" style="display:none">Not a JIRA site.</span>
+						<input type="text" id="jira-url" class="textbox"/>
+					</td>
+				</tr>
+				<tr>
+					<td class="label">Filter:</td>
+					<td>
+						<select id="filters">
+						</select>
 					</td>
 				</tr>
 				<tr>
@@ -37,20 +43,6 @@
 							<option value="900000">15 minutes</option>
 							<option value="1800000">30 minutes</option>
 						</select>
-					</td>
-				</tr>
-				<tr class="advanced" style="display: inline">
-					<td colspan="2">
-						Advanced (<span onclick="toggleAdvanced()" class="link">Show</span>)
-					</td>
-				</tr>
-				<tr class="advanced">
-					<td colspan="2" class="error">Change these only if you know what you are doing!</td>
-				</tr>
-				<tr class="advanced">
-					<td class="label">Query:</td>
-					<td>
-						<input type="text" id="query" class="textbox"/>						
 					</td>
 				</tr>
 			</table>

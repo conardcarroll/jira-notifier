@@ -3,6 +3,9 @@ var LOADING_ANIMATION_ = new LoadingAnimation();
 var COLOR_RED_ = [208, 0, 24, 255];
 var COLOR_GREY_ = [190, 190, 190, 230];
 
+var PROCESSOR_;
+var SERIALIZER_ = new XMLSerializer();
+
 var issueCount_ = -1;
 var requestTimeout_;
 
@@ -49,6 +52,20 @@ function init() {
 	chrome.browserAction.setBadgeBackgroundColor({color: COLOR_RED_});
 	chrome.browserAction.setIcon({path: 'img/icon-signed-in.png'});
 	LOADING_ANIMATION_.start();
+	
+	PROCESSOR_ = new XSLTProcessor();
+	$.ajax({
+		url: "jira.xsl",
+		async: false,
+		complete: function(xhr, status) {
+			if (status == 'success') {
+				PROCESSOR_.importStylesheet(xhr.responseXML);
+			} else {
+				showErrorMessage_();
+			}
+		}
+	});
+	
 	startRequest_();
 }
 
@@ -88,6 +105,7 @@ function updateIssueCount_(count) {
 	}
 	issueCount_ = count;
 	chrome.browserAction.setIcon({path: 'img/icon-signed-in.png'});
+	chrome.browserAction.setTitle({title: getFilterName() + ' - ' + issueCount_ + " Issues"});
 	if (issueCount_ > 0) {
 		chrome.browserAction.setBadgeText({text: issueCount_ + ''});
 		chrome.browserAction.setBadgeBackgroundColor({color: COLOR_RED_});
@@ -96,4 +114,9 @@ function updateIssueCount_(count) {
 	if (issueCount_ == 0) {
 		chrome.browserAction.setBadgeText({text: ''});
 	}
+}
+
+function transformToString(xml) {
+	var doc = PROCESSOR_.transformToDocument(xml);
+	return SERIALIZER_.serializeToString(doc.documentElement);
 }
