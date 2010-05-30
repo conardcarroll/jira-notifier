@@ -41,6 +41,12 @@ function setContent(start) {
 			if (status == 'success') {
 				var h = chrome.extension.getBackgroundPage().transformToString(xhr.responseXML);
 				$('#content').html(h);
+				$('td[title]').tooltip({
+					tip: '.tooltip',
+					effect: 'fade',
+					fadeOutSpeed: 100,
+					predelay: 400,
+				}).dynamic();
 				chrome.extension.getBackgroundPage().reload();
 			} else {
 				showErrorMessage_();

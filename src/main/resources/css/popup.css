@@ -27,6 +27,20 @@ td {
 	color: #aaa;
 }
 
+.tooltip {
+	display:none;
+	background-color:#ffa;
+	border:1px solid #cc9;
+	padding:3px;
+	font-size:13px;
+	-webkit-box-shadow: 2px 2px 11px #666;
+}
+
+.tooltip>a {
+	color: #68d;
+	text-decoration:none;
+}
+
 #content {
 	padding-top: 5px;
 }

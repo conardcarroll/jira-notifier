@@ -87,27 +87,23 @@
     </xsl:template>
     
     <xsl:template match="item">
-        <xsl:variable name="description" select="description/text()"/>
         <tr>                                
             <xsl:if test="position() mod 2 = 0">
                 <xsl:attribute name="class">
                     <xsl:text>alternate</xsl:text>
                 </xsl:attribute>
             </xsl:if>
-            <td align="center">
+            <td align="center">			
+				<xsl:attribute name="title">
+					<xsl:value-of select="type/text()"/>
+				</xsl:attribute>
                 <img>
-                    <xsl:attribute name="title">
-                        <xsl:value-of select="type/text()"/>
-                    </xsl:attribute>
                     <xsl:attribute name="src">
                         <xsl:value-of select="type/@iconUrl"/>
                     </xsl:attribute>
                 </img>
             </td>
             <td class="bold link" align="center">
-                <xsl:attribute name="title">
-                    <xsl:value-of select="$description"/>
-                </xsl:attribute>
                 <xsl:attribute name="onclick">
                     <xsl:text>openJiraTab('</xsl:text>
                     <xsl:value-of select="link"/>
@@ -119,7 +115,10 @@
             </td>
             <td class="link">
                 <xsl:attribute name="title">
-                    <xsl:value-of select="$description"/>
+                    <xsl:value-of select="substring(description, 0, 500)"/>
+					<xsl:if test="string-length(description) &gt; 500">
+						<xsl:text>...</xsl:text>
+					</xsl:if>
                 </xsl:attribute>
                 <xsl:attribute name="onclick">
                     <xsl:text>openJiraTab('</xsl:text>
@@ -130,11 +129,11 @@
                     <xsl:value-of select="summary"/>
                 </span>
             </td>
-            <td align="center">
+            <td align="center">			
+				<xsl:attribute name="title">
+					<xsl:value-of select="priority/text()"/>
+				</xsl:attribute>
                 <img>
-                    <xsl:attribute name="title">
-                        <xsl:value-of select="priority/text()"/>
-                    </xsl:attribute>
                     <xsl:attribute name="src">
                         <xsl:value-of select="priority/@iconUrl"/>
                     </xsl:attribute>
