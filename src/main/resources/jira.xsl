@@ -87,6 +87,7 @@
     </xsl:template>
     
     <xsl:template match="item">
+        <xsl:variable name="descLen" select="count(../item) * 50" />
         <tr>                                
             <xsl:if test="position() mod 2 = 0">
                 <xsl:attribute name="class">
@@ -115,8 +116,8 @@
             </td>
             <td class="link">
                 <xsl:attribute name="title">
-                    <xsl:value-of select="substring(description, 0, 500)"/>
-					<xsl:if test="string-length(description) &gt; 500">
+                    <xsl:value-of select="substring(description, 0, $descLen)"/>
+					<xsl:if test="string-length(description) &gt; $descLen">
 						<xsl:text>...</xsl:text>
 					</xsl:if>
                 </xsl:attribute>
