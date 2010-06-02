@@ -41,6 +41,9 @@ function restoreOptions() {
 function updateJiraSelect(jiraUrl) {
 	var query = { 'text': 'jira AND secure', 'startTime': 0 };
 	chrome.history.search(query, function(results) {
+		results.sort(function(a, b) {
+			return b.visitCount - a.visitCount;
+		});	
 		var $jiraSelect = $('#jira-url-select');
 		$jiraSelect.children().remove();
 		for (var i = 0; i < results.length; i++) {
