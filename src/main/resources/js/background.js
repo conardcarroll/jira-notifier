@@ -1,6 +1,7 @@
 var LOADING_ANIMATION_ = new LoadingAnimation();
 
 var COLOR_RED_ = [208, 0, 24, 255];
+var COLOR_BLUE_ = [ 100, 150, 250, 255];
 var COLOR_GREY_ = [190, 190, 190, 230];
 
 var PROCESSOR_;
@@ -49,7 +50,7 @@ LoadingAnimation.prototype.stop = function() {
 }
 
 function init() {
-	chrome.browserAction.setBadgeBackgroundColor({color: COLOR_RED_});
+	chrome.browserAction.setBadgeBackgroundColor({color: COLOR_GREY_});
 	chrome.browserAction.setIcon({path: 'img/icon-signed-in.png'});
 	LOADING_ANIMATION_.start();
 	
@@ -110,8 +111,9 @@ function updateIssueCount_(count) {
 	chrome.browserAction.setTitle({title: getFilterName() + ' - ' + issueCount_ + " Issues"});
 	if (issueCount_ > 0) {
 		var issueText = (issueCount_ > 999 ? '999+' : issueCount_ + '');
+		var color = (count > issueCount_ ? COLOR_RED_ : COLOR_BLUE_);
 		chrome.browserAction.setBadgeText({text: issueText});
-		chrome.browserAction.setBadgeBackgroundColor({color: COLOR_RED_});
+		chrome.browserAction.setBadgeBackgroundColor({color: color});
 		return;
 	}
 	if (issueCount_ == 0) {
