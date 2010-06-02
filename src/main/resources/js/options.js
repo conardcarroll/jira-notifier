@@ -24,7 +24,9 @@ function saveOptions() {
 	var $filters = $('#filters');
 	setFilterId($filters.val());
 	setFilterName($filters.find('option:selected').text());
-	setRefreshInterval($('#refresh-interval').val());	
+	setRefreshInterval($('#refresh-interval').val());
+	
+	setNotificationEnabled($('#notification-enabled').is(':checked'));
 	
 	chrome.extension.getBackgroundPage().reload();
 }
@@ -36,6 +38,9 @@ function restoreOptions() {
 	updateJiraSelect(jiraUrl);
 	updateFilters(jiraUrl);
 	$('#filters').val(getFilterId());
+	if (isNotificationEnabled()) {
+		$('#notification-enabled').attr('checked', true);
+	}
 }
 
 function updateJiraSelect(jiraUrl) {
@@ -125,6 +130,19 @@ function checkJiraUrl(selectInput) {
 			$spinner.hide();
 		}
 	});
+}
+
+function requestNotifications() {
+	var $notificationEnabled = $('#notification-enabled');
+	if ($notificationEnabled.is(':checked')) {
+		webkitNotifications.requestPermission(function() {
+			if (webkitNotifications.checkPermission() != 0) {
+				$notificationEnabled.removeAttr('checked');
+				$notificationEnabled.attr('disabled', 'disabled');
+				setNotificationEnabled(false);
+			}
+		});
+	}
 }
 
 function toggleJira() {

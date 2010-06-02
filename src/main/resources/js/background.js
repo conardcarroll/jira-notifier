@@ -7,7 +7,7 @@ var COLOR_GREY_ = [190, 190, 190, 230];
 var PROCESSOR_;
 var SERIALIZER_ = new XMLSerializer();
 
-var issueCount_ = -1;
+var issueCount_;
 var requestTimeout_;
 
 function LoadingAnimation() {
@@ -106,6 +106,9 @@ function updateIssueCount_(count) {
 		showLoggedOut_();
 		return;
 	}
+	if (isNotificationEnabled() && count > issueCount_) {
+		showNotification_(count - issueCount_);
+	}	
 	issueCount_ = count;
 	chrome.browserAction.setIcon({path: 'img/icon-signed-in.png'});
 	chrome.browserAction.setTitle({title: getFilterName() + ' - ' + issueCount_ + " Issues"});
@@ -119,6 +122,15 @@ function updateIssueCount_(count) {
 	if (issueCount_ == 0) {
 		chrome.browserAction.setBadgeText({text: ''});
 	}
+}
+
+function showNotification_(count) {
+	var notification = webkitNotifications.createNotification(
+		'img/icon-64.png',
+		getFilterName(),
+		'You have ' + count + ' new issue' + (count > 1 ? 's' : '') + '.'
+	);
+	notification.show();
 }
 
 function transformToString(xml) {
