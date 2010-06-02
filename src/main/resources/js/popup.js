@@ -34,13 +34,16 @@ function quickSearch() {
 	openJiraTab(getJiraUrl() + QUICK_SEARCH_URL_ + $('#quick-search').val());
 }
 
-function setContent(start) {
+function setContent(start, direction) {
 	$.ajax({
 		url: getFeedUrl(getPerPage()) + "&pager/start=" + start,
 		complete: function(xhr, status) {
 			if (status == 'success') {
 				var h = chrome.extension.getBackgroundPage().transformToString(xhr.responseXML);
 				$('#content').html(h);
+				if (direction) {
+					$('#items').show('slide', { 'direction': direction });
+				}
 				$('td[title]').tooltip({
 					tip: '.tooltip',
 					effect: 'fade',
