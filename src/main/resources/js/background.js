@@ -109,7 +109,8 @@ function updateIssueCount_(count) {
 	chrome.browserAction.setIcon({path: 'img/icon-signed-in.png'});
 	chrome.browserAction.setTitle({title: getFilterName() + ' - ' + issueCount_ + " Issues"});
 	if (issueCount_ > 0) {
-		chrome.browserAction.setBadgeText({text: issueCount_ + ''});
+		var issueText = (issueCount_ > 999 ? '999+' : issueCount_ + '');
+		chrome.browserAction.setBadgeText({text: issueText});
 		chrome.browserAction.setBadgeBackgroundColor({color: COLOR_RED_});
 		return;
 	}
