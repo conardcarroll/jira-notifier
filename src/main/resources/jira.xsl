@@ -40,7 +40,7 @@
 											<xsl:attribute name="onclick">
 												<xsl:text>setContent(</xsl:text>
 												<xsl:value-of select="$start - 10"/>
-												<xsl:text>, "left");</xsl:text>
+												<xsl:text>, "right", "left");</xsl:text>
 											</xsl:attribute>
 											<xsl:text>&lt; Prev</xsl:text>
 										</span>
@@ -48,7 +48,7 @@
 								</td>
 								<td align="center">
 									<xsl:if test="$total &gt; 10">
-										<span style="align:center">
+										<span style="align:center" id="count">
 											<xsl:value-of select="$start + 1"/>
 											<xsl:text>-</xsl:text>
 											<xsl:value-of select="$end"/>
@@ -63,7 +63,7 @@
 											<xsl:attribute name="onclick">
 												<xsl:text>setContent(</xsl:text>
 												<xsl:value-of select="$start + 10"/>
-												<xsl:text>, "right");</xsl:text>
+												<xsl:text>, "left", "right");</xsl:text>
 											</xsl:attribute>
 											<xsl:text>Next &gt;</xsl:text>
 										</span>
@@ -81,6 +81,9 @@
                         </tr>
                         <xsl:apply-templates select="item" />
                     </table>
+					<div id="spacer" style="display: none" class="message">
+						<img src="img/spinner.gif"></img>
+					</div>
                 </xsl:otherwise>
             </xsl:choose>
         </div>

@@ -34,28 +34,40 @@ function quickSearch() {
 	openJiraTab(getJiraUrl() + QUICK_SEARCH_URL_ + $('#quick-search').val());
 }
 
-function setContent(start, direction) {
-	$.ajax({
-		url: getFeedUrl(getPerPage()) + "&pager/start=" + start,
-		complete: function(xhr, status) {
-			if (status == 'success') {
-				var h = chrome.extension.getBackgroundPage().transformToString(xhr.responseXML);
-				$('#content').html(h);
-				if (direction) {
-					$('#items').show('slide', { 'direction': direction });
+function setContent(start, outDir, inDir) {
+	var $items = $('#items');
+	var $spacer = $('#spacer');
+	var $content = $('#content');
+	$spacer.height($items.height());
+	$('#count').hide();
+	$items.hide('slide', { 'direction': outDir || 'down' }, 'fast', function() {
+		$spacer.show();		
+		$.ajax({
+			url: getFeedUrl(getPerPage()) + "&pager/start=" + start,
+			complete: function(xhr, status) {
+				if (status == 'success') {
+					var h = chrome.extension.getBackgroundPage().transformToString(xhr.responseXML);
+					$content.html(h);
+					if (!outDir && !inDir) {
+						$content.show('slide', { 'direction': 'up'}, 'fast');
+					}
+					$items = $('#items');
+					if (inDir) {
+						$items.show('slide', { 'direction': inDir }, 'fast');
+					}
+					$items.find('td[title]').tooltip({
+						tip: '.tooltip',
+						effect: 'fade',
+						fadeOutSpeed: 100,
+						predelay: 400,
+					}).dynamic();
+					chrome.extension.getBackgroundPage().reload();
+				} else {
+					showErrorMessage_();
 				}
-				$('td[title]').tooltip({
-					tip: '.tooltip',
-					effect: 'fade',
-					fadeOutSpeed: 100,
-					predelay: 400,
-				}).dynamic();
-				chrome.extension.getBackgroundPage().reload();
-			} else {
-				showErrorMessage_();
-			}
-		},
-		error: showErrorMessage_
+			},
+			error: showErrorMessage_
+		});
 	});
 }
 
