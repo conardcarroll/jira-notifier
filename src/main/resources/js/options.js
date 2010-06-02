@@ -1,5 +1,7 @@
 ﻿var CHECK_URL_ = "/sr/jira.issueviews:searchrequest-xml/temp/SearchRequest.xml?tempMax=0"
 
+var jiraCheckRequest_;
+
 function saveOptions() {
 	var $saveButton = $('#save-button');
 	$saveButton.attr('disabled', 'disabled');
@@ -84,11 +86,14 @@ function updateFilters(url) {
 function checkJiraUrl(selectInput) {
 	var $spinner = $('#spinner');
 	$spinner.show();
+	if (jiraCheckRequest_) {
+		jiraCheckRequest_.abort();
+	}
 	var $jiraUrl = (selectInput ? $('#jira-url-select') : $('#jira-url'));
 	var $otherJiraUrl = (!selectInput ? $('#jira-url-select') : $('#jira-url'));
 	var $jiraMessage = $('#jira-message');
 	var $saveButton = $('#save-button');
-	$.ajax({
+	jiraCheckRequest_ = $.ajax({
 		url: $jiraUrl.val() + CHECK_URL_,
 		async: true,
 		cache: false,
@@ -98,6 +103,9 @@ function checkJiraUrl(selectInput) {
 				var xml = xhr.responseXML;
 				var version = $(xml).find('version').text();
 				valid = (version.indexOf('4.') == 0);
+			}
+			if (xhr.status == 0) {
+				valid = true;
 			}
 			if (valid) {
 				$jiraUrl.removeClass('error');
