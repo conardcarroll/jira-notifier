@@ -102,6 +102,7 @@ function showLoggedOut_() {
 }
 
 function updateIssueCount_(count) {
+	count = parseInt(count);
 	if (!count) {
 		showLoggedOut_();
 		return;

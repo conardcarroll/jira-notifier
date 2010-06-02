@@ -6,7 +6,10 @@
 		<script type="text/javascript" src="js/background.js" />
 		<script>
 			$(document).ready(init);
-			function reload() {
+			function reload(reset) {
+				if (reset) {
+					issueCount_ = '?';
+				}
 				startRequest_();
 			}
 		</script>

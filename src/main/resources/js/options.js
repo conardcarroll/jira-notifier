@@ -28,7 +28,7 @@ function saveOptions() {
 	
 	setNotificationEnabled($('#notification-enabled').is(':checked'));
 	
-	chrome.extension.getBackgroundPage().reload();
+	chrome.extension.getBackgroundPage().reload(true);
 }
 
 function restoreOptions() {
