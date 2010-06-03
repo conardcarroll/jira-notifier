@@ -109,13 +109,14 @@ function updateIssueCount_(count) {
 	}
 	if (isNotificationEnabled() && count > issueCount_) {
 		showNotification_(count - issueCount_);
-	}	
+	}
+	var oldCount = issueCount_;
 	issueCount_ = count;
 	chrome.browserAction.setIcon({path: 'img/icon-signed-in.png'});
 	chrome.browserAction.setTitle({title: getFilterName() + ' - ' + issueCount_ + " Issues"});
 	if (issueCount_ > 0) {
 		var issueText = (issueCount_ > 999 ? '999+' : issueCount_ + '');
-		var color = (count > issueCount_ ? COLOR_RED_ : COLOR_BLUE_);
+		var color = (issueCount_ > oldCount ? COLOR_RED_ : COLOR_BLUE_);
 		chrome.browserAction.setBadgeText({text: issueText});
 		chrome.browserAction.setBadgeBackgroundColor({color: color});
 		return;

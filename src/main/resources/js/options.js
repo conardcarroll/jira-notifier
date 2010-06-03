@@ -75,8 +75,8 @@ function updateFilters(url) {
 		cache: false,
 		async: false,
 		complete: function(xhr, status) {
-			var $h = $(xhr.responseText);
-			$h.find('a[id^=filterlink]').each(function(index, value) {
+			var h = xhr.responseText;
+			$(h).find('a[id^=filterlink]').each(function(index, value) {
 				var id = $(value).attr('id');
 				var pos = id.lastIndexOf('_');
 				if (pos > -1) {
