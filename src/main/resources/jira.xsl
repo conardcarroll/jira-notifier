@@ -46,7 +46,7 @@
 										</span>
 									</xsl:if>
 								</td>
-								<td align="center">
+								<td align="center" height="19px">
 									<xsl:if test="$total &gt; 10">
 										<span style="align:center" id="count">
 											<xsl:value-of select="$start + 1"/>
