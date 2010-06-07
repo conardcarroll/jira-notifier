@@ -3,6 +3,7 @@ var JIRA_URL_KEY_ = 'jira-url';
 var FILTER_ID_KEY_ = 'filter-id';
 var FILTER_NAME_KEY_ = 'filter-name';
 var NOTIFICATION_ENABLED_KEY_ = 'notification-enabled';
+var ANIMATION_ENABLED_KEY_ = 'animation-enabled';
 
 var FEED_URL_ = '{baseUrl}/sr/jira.issueviews:searchrequest-xml/{filterId}/SearchRequest-{filterId}.xml?field=key&field=summary&field=description&field=link&field=type&field=priority&tempMax={count}';
 var PER_PAGE_ = 10;
@@ -45,6 +46,14 @@ function isNotificationEnabled() {
 
 function setNotificationEnabled(value) {
 	localStorage[NOTIFICATION_ENABLED_KEY_] = value;
+}
+
+function isAnimationEnabled() {
+	return localStorage[ANIMATION_ENABLED_KEY_] === 'true';
+}
+
+function setAnimationEnabled(value) {
+	localStorage[ANIMATION_ENABLED_KEY_] = value;
 }
 
 function getPerPage() {

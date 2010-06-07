@@ -27,6 +27,7 @@ function saveOptions() {
 	setRefreshInterval($('#refresh-interval').val());
 	
 	setNotificationEnabled($('#notification-enabled').is(':checked'));
+	setAnimationEnabled($('#animation-enabled').is(':checked'));
 	
 	chrome.extension.getBackgroundPage().reload(true);
 }
@@ -40,6 +41,9 @@ function restoreOptions() {
 	$('#filters').val(getFilterId());
 	if (isNotificationEnabled()) {
 		$('#notification-enabled').attr('checked', true);
+	}
+	if (isAnimationEnabled()) {
+		$('#animation-enabled').attr('checked', true);
 	}
 }
 

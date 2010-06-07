@@ -38,10 +38,11 @@ function setContent(start, outDir, inDir) {
 	var $items = $('#items');
 	var $spacer = $('#spacer');
 	var $content = $('#content');
+	var speed = (isAnimationEnabled() ? 'fast' : -1);
 	$spacer.height($items.height());
-	$('#count').hide();
-	$items.hide('slide', { 'direction': outDir || 'down' }, 'fast', function() {
-		$spacer.show();		
+	$('#count').html('<img src="img/spinner.gif"></img>');
+	$items.hide('slide', { 'direction': outDir || 'down' }, speed, function() {
+		$spacer.show();
 		$.ajax({
 			url: getFeedUrl(getPerPage()) + "&pager/start=" + start,
 			complete: function(xhr, status) {
@@ -49,11 +50,11 @@ function setContent(start, outDir, inDir) {
 					var h = chrome.extension.getBackgroundPage().transformToString(xhr.responseXML);
 					$content.html(h);
 					if (!outDir && !inDir) {
-						$content.show('slide', { 'direction': 'up'}, 'fast');
+						$content.show('slide', { 'direction': 'up'}, speed);
 					}
 					$items = $('#items');
 					if (inDir) {
-						$items.show('slide', { 'direction': inDir }, 'fast');
+						$items.show('slide', { 'direction': inDir }, speed);
 					}
 					$items.find('td[title]').tooltip({
 						tip: '.tooltip',

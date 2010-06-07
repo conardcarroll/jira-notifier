@@ -82,7 +82,6 @@
                         <xsl:apply-templates select="item" />
                     </table>
 					<div id="spacer" style="display: none" class="message">
-						<img src="img/spinner.gif"></img>
 					</div>
                 </xsl:otherwise>
             </xsl:choose>
