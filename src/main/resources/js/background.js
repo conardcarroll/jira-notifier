@@ -84,6 +84,9 @@ function startRequest_() {
 				showLoggedOut_();
 			}
 			scheduleRequest_();
+		},
+		error: function(xhr, status, error) {
+			scheduleRequest_();
 		}
 	});
 }

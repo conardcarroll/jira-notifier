@@ -17,7 +17,7 @@ function saveOptions() {
 	if ($jiraUrl.is(':hidden')) {
 		url = $jiraSelect.val();
 	} else {
-		url = $jiraUrl.val();
+		url = stripUrl($jiraUrl.val());
 	}	
 	setJiraUrl(url);
 	
@@ -37,7 +37,6 @@ function restoreOptions() {
 	$('#jira-url').val(jiraUrl);
 	$('#refresh-interval').val(getRefreshInterval());
 	updateJiraSelect(jiraUrl);
-	updateFilters(jiraUrl);
 	$('#filters').val(getFilterId());
 	if (isNotificationEnabled()) {
 		$('#notification-enabled').attr('checked', true);
@@ -66,6 +65,9 @@ function updateJiraSelect(jiraUrl) {
 			}
 		}
 		$jiraSelect.val(jiraUrl);
+		jiraUrl = $jiraSelect.val();
+		updateFilters(jiraUrl);
+		$('#jira-url').val(jiraUrl);
 	});
 }
 
@@ -105,8 +107,9 @@ function checkJiraUrl(selectInput) {
 	var $otherJiraUrl = (!selectInput ? $('#jira-url-select') : $('#jira-url'));
 	var $jiraMessage = $('#jira-message');
 	var $saveButton = $('#save-button');
+	var strippedUrl = stripUrl($jiraUrl.val());
 	jiraCheckRequest_ = $.ajax({
-		url: $jiraUrl.val() + CHECK_URL_,
+		url: strippedUrl + CHECK_URL_,
 		async: true,
 		cache: false,
 		complete: function(xhr, status) {
@@ -121,7 +124,7 @@ function checkJiraUrl(selectInput) {
 			}
 			if (valid) {
 				$jiraUrl.removeClass('error');
-				$otherJiraUrl.val($jiraUrl.val());
+				$otherJiraUrl.val(strippedUrl);
 				$jiraMessage.hide();
 				$saveButton.removeAttr('disabled');
 				updateFilters($jiraUrl.val());
@@ -153,4 +156,8 @@ function toggleJira() {
 	$('#jira-url').toggle();
 	$('#jira-url-select').toggle();
 	$('#toggle-jira').html('Select JIRA from history');
+}
+
+function stripUrl(url) {
+	return url.replace(/secure\/Dashboard.jspa$/, '');
 }
