@@ -1,6 +1,6 @@
-﻿var CHECK_URL_ = "/sr/jira.issueviews:searchrequest-xml/temp/SearchRequest.xml?tempMax=0"
+﻿var CHECK_URL = "/sr/jira.issueviews:searchrequest-xml/temp/SearchRequest.xml?tempMax=0"
 
-var jiraCheckRequest_;
+var jiraCheckRequest;
 
 function saveOptions() {
 	var $saveButton = $('#save-button');
@@ -24,10 +24,8 @@ function saveOptions() {
 	var $filters = $('#filters');
 	setFilterId($filters.val());
 	setFilterName($filters.find('option:selected').text());
-	setRefreshInterval($('#refresh-interval').val());
-	
+	setRefreshInterval($('#refresh-interval').val());	
 	setNotificationEnabled($('#notification-enabled').is(':checked'));
-	setAnimationEnabled($('#animation-enabled').is(':checked'));
 	
 	chrome.extension.getBackgroundPage().reload(true);
 }
@@ -40,9 +38,6 @@ function restoreOptions() {
 	$('#filters').val(getFilterId());
 	if (isNotificationEnabled()) {
 		$('#notification-enabled').attr('checked', true);
-	}
-	if (isAnimationEnabled()) {
-		$('#animation-enabled').attr('checked', true);
 	}
 }
 
@@ -100,16 +95,16 @@ function updateFilters(url) {
 function checkJiraUrl(selectInput) {
 	var $spinner = $('#spinner');
 	$spinner.show();
-	if (jiraCheckRequest_) {
-		jiraCheckRequest_.abort();
+	if (jiraCheckRequest) {
+		jiraCheckRequest.abort();
 	}
 	var $jiraUrl = (selectInput ? $('#jira-url-select') : $('#jira-url'));
 	var $otherJiraUrl = (!selectInput ? $('#jira-url-select') : $('#jira-url'));
 	var $jiraMessage = $('#jira-message');
 	var $saveButton = $('#save-button');
 	var strippedUrl = stripUrl($jiraUrl.val());
-	jiraCheckRequest_ = $.ajax({
-		url: strippedUrl + CHECK_URL_,
+	jiraCheckRequest = $.ajax({
+		url: strippedUrl + CHECK_URL,
 		async: true,
 		cache: false,
 		complete: function(xhr, status) {

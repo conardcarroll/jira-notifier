@@ -40,7 +40,7 @@
 											<xsl:attribute name="onclick">
 												<xsl:text>setContent(</xsl:text>
 												<xsl:value-of select="$start - 10"/>
-												<xsl:text>, "right", "left");</xsl:text>
+												<xsl:text>);</xsl:text>
 											</xsl:attribute>
 											<xsl:text>&lt; Prev</xsl:text>
 										</span>
@@ -63,7 +63,7 @@
 											<xsl:attribute name="onclick">
 												<xsl:text>setContent(</xsl:text>
 												<xsl:value-of select="$start + 10"/>
-												<xsl:text>, "left", "right");</xsl:text>
+												<xsl:text>);</xsl:text>
 											</xsl:attribute>
 											<xsl:text>Next &gt;</xsl:text>
 										</span>

@@ -1,14 +1,14 @@
-var LOADING_ANIMATION_ = new LoadingAnimation();
+var LOADING_ANIMATION = new LoadingAnimation();
 
-var COLOR_RED_ = [208, 0, 24, 255];
-var COLOR_BLUE_ = [ 100, 150, 250, 255];
-var COLOR_GREY_ = [190, 190, 190, 230];
+var COLOR_RED = [208, 0, 24, 255];
+var COLOR_BLUE = [ 100, 150, 250, 255];
+var COLOR_GREY = [190, 190, 190, 230];
 
-var PROCESSOR_;
-var SERIALIZER_ = new XMLSerializer();
+var PROCESSOR;
+var SERIALIZER = new XMLSerializer();
 
-var issueCount_;
-var requestTimeout_;
+var issueCount;
+var requestTimeout;
 
 function LoadingAnimation() {
 	this.timerId_ = 0;
@@ -50,86 +50,86 @@ LoadingAnimation.prototype.stop = function() {
 }
 
 function init() {
-	chrome.browserAction.setBadgeBackgroundColor({color: COLOR_GREY_});
+	chrome.browserAction.setBadgeBackgroundColor({color: COLOR_GREY});
 	chrome.browserAction.setIcon({path: 'img/icon-signed-in.png'});
-	LOADING_ANIMATION_.start();
+	LOADING_ANIMATION.start();
 	
-	if (!PROCESSOR_) {
-		PROCESSOR_ = new XSLTProcessor();
+	if (!PROCESSOR) {
+		PROCESSOR = new XSLTProcessor();
 		$.ajax({
 			url: "jira.xsl",
 			async: false,
 			complete: function(xhr, status) {
 				if (status == 'success') {
-					PROCESSOR_.importStylesheet(xhr.responseXML);
+					PROCESSOR.importStylesheet(xhr.responseXML);
 				} else {
-					showErrorMessage_();
+					showErrorMessage();
 				}
 			}
 		});
 	}
 	
-	startRequest_();
+	startRequest();
 }
 
-function startRequest_() {
+function startRequest() {
+	LOADING_ANIMATION.start();
 	$.ajax({
 		url: getFeedUrl(0),
 		complete: function (xhr, status) {
-			LOADING_ANIMATION_.stop();
+			LOADING_ANIMATION.stop();
 			if (status == 'success') {
 				var xml = xhr.responseXML;
-				updateIssueCount_($(xml).find('issue').attr('total'));
+				updateIssueCount($(xml).find('issue').attr('total'));
 			} else {
-				showLoggedOut_();
+				showLoggedOut();
 			}
-			scheduleRequest_();
+			scheduleRequest();
 		},
 		error: function(xhr, status, error) {
-			scheduleRequest_();
+			scheduleRequest();
 		}
 	});
 }
 
-function scheduleRequest_() {
-	if (requestTimeout_) {
-		window.clearInterval(requestTimeout_);
+function scheduleRequest() {
+	if (requestTimeout) {
+		window.clearInterval(requestTimeout);
 	}
-	requestTimeout = window.setTimeout(startRequest_, getRefreshInterval());
+	requestTimeout = window.setInterval(startRequest, getRefreshInterval());
 }
 
-function showLoggedOut_() {
+function showLoggedOut() {
 	chrome.browserAction.setIcon({path: 'img/icon-signed-out.png'});
-	chrome.browserAction.setBadgeBackgroundColor({color: COLOR_GREY_});
+	chrome.browserAction.setBadgeBackgroundColor({color: COLOR_GREY});
 	chrome.browserAction.setBadgeText({text: '?'});
 }
 
-function updateIssueCount_(count) {
+function updateIssueCount(count) {
 	count = parseInt(count);
 	if (!count) {
-		showLoggedOut_();
+		showLoggedOut();
 		return;
 	}
-	if (isNotificationEnabled() && count > issueCount_) {
-		showNotification_(count - issueCount_);
+	if (isNotificationEnabled() && count > issueCount) {
+		showNotification(count - issueCount);
 	}
-	var oldCount = issueCount_;
-	issueCount_ = count;
+	var oldCount = issueCount;
+	issueCount = count;
 	chrome.browserAction.setIcon({path: 'img/icon-signed-in.png'});
-	chrome.browserAction.setTitle({title: getFilterName() + ' - ' + issueCount_ + " Issues"});
-	if (issueCount_ > 0) {
-		var issueText = (issueCount_ > 999 ? '999+' : issueCount_ + '');
-		var color = (issueCount_ > oldCount ? COLOR_RED_ : COLOR_BLUE_);
+	chrome.browserAction.setTitle({title: getFilterName() + ' - ' + issueCount + " Issues"});
+	if (issueCount > 0) {
+		var issueText = (issueCount > 999 ? '999+' : issueCount + '');
+		var color = (issueCount > oldCount ? COLOR_RED : COLOR_BLUE);
 		chrome.browserAction.setBadgeText({text: issueText});
 		chrome.browserAction.setBadgeBackgroundColor({color: color});
 		return;
-	}
-	if (issueCount_ == 0) {
+	} else {
 		chrome.browserAction.setBadgeText({text: ''});
 	}
 }
 
-function showNotification_(count) {
+function showNotification(count) {
 	var notification = webkitNotifications.createNotification(
 		'img/icon-64.png',
 		getFilterName(),
@@ -139,6 +139,6 @@ function showNotification_(count) {
 }
 
 function transformToString(xml) {
-	var doc = PROCESSOR_.transformToDocument(xml);
-	return SERIALIZER_.serializeToString(doc.documentElement);
+	var doc = PROCESSOR.transformToDocument(xml);
+	return SERIALIZER.serializeToString(doc.documentElement);
 }

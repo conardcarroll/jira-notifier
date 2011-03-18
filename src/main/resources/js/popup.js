@@ -1,5 +1,5 @@
-﻿var JIRA_URL_RE_ = /https?\:\/\/.*\/jira\//;
-var QUICK_SEARCH_URL_ = "/secure/QuickSearch.jspa?searchString=";
+﻿var JIRA_URL_RE = /https?\:\/\/.*\/jira\//;
+var QUICK_SEARCH_URL = "/secure/QuickSearch.jspa?searchString=";
 
 function init() {
 	setTimeout(function() {
@@ -7,10 +7,10 @@ function init() {
 	}, 10);
 }
 
-function getJiraTab_(callback) {
+function getJiraTab(callback) {
 	chrome.tabs.getAllInWindow(undefined, function(tabs) {
 		for (var i = 0, tab; tab = tabs[i]; i++) {
-			if (tab.url && JIRA_URL_RE_.test(tab.url)) {
+			if (tab.url && JIRA_URL_RE.test(tab.url)) {
 				callback(tab);
 				return;
 			}
@@ -20,7 +20,7 @@ function getJiraTab_(callback) {
 }
 
 function openJiraTab(jiraUrl) {
-	getJiraTab_(function(tab) {
+	getJiraTab(function(tab) {
 		if (tab) {
 			chrome.tabs.update(tab.id, {selected: true, url: jiraUrl});
 		} else {
@@ -31,17 +31,16 @@ function openJiraTab(jiraUrl) {
 }
 
 function quickSearch() {
-	openJiraTab(getJiraUrl() + QUICK_SEARCH_URL_ + $('#quick-search').val());
+	openJiraTab(getJiraUrl() + QUICK_SEARCH_URL + $('#quick-search').val());
 }
 
-function setContent(start, outDir, inDir) {
+function setContent(start) {
 	var $items = $('#items');
 	var $spacer = $('#spacer');
 	var $content = $('#content');
-	var speed = (isAnimationEnabled() ? 'fast' : -1);
 	$spacer.height($items.height());
 	$('#count').html('<img src="img/spinner.gif"></img>');
-	$items.hide('slide', { 'direction': outDir || 'down' }, speed, function() {
+	$items.hide(0, function() {
 		$spacer.show();
 		$.ajax({
 			url: getFeedUrl(getPerPage()) + "&pager/start=" + start,
@@ -49,29 +48,24 @@ function setContent(start, outDir, inDir) {
 				if (status == 'success') {
 					var h = chrome.extension.getBackgroundPage().transformToString(xhr.responseXML);
 					$content.html(h);
-					if (!outDir && !inDir) {
-						$content.show('slide', { 'direction': 'up'}, speed);
-					}
 					$items = $('#items');
-					if (inDir) {
-						$items.show('slide', { 'direction': inDir }, speed);
-					}
 					$items.find('td[title]').tooltip({
 						tip: '.tooltip',
 						effect: 'fade',
 						fadeOutSpeed: 100,
 						predelay: 400,
 					}).dynamic();
+					$items.show();
 					chrome.extension.getBackgroundPage().reload();
 				} else {
-					showErrorMessage_();
+					showErrorMessage();
 				}
 			},
-			error: showErrorMessage_
+			error: showErrorMessage
 		});
 	});
 }
 
-function showErrorMessage_() {
+function showErrorMessage() {
 	$('#content').html('<div class="message">Could not retrieve JIRA issues.</div>');
 }
