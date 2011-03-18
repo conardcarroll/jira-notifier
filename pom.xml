@@ -4,7 +4,7 @@
 	<artifactId>chrome-jira-notifier</artifactId>
 	<packaging>pom</packaging>
 	<version>2.1-SNAPSHOT</version>
-	<name>JIRA Notifier for Google Chrome</name>
+	<name>JIRA Notifier</name>
 	<build>
         <plugins>
             <plugin>

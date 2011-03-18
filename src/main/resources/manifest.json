@@ -1,5 +1,5 @@
 ﻿{
-	"name": "JIRA Notifier for Chrome",
+	"name": "JIRA Notifier",
 	"version": "${project.version}",
 	"description": "Checks JIRA for issues assigned to you.",
 	"permissions": [ "tabs", "http://*/*", "https://*/*", "history" ],
