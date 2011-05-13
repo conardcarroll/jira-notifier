@@ -135,6 +135,9 @@ function showNotification(count) {
 		getFilterName(),
 		'You have ' + count + ' new issue' + (count > 1 ? 's' : '') + '.'
 	);
+	window.setTimeout(function() {
+		notification.cancel();
+	}, 5000);
 	notification.show();
 }
 
