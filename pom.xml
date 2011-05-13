@@ -3,7 +3,7 @@
 	<groupId>chrome-jira-notifier</groupId>
 	<artifactId>chrome-jira-notifier</artifactId>
 	<packaging>pom</packaging>
-	<version>2.0.3</version>
+	<version>2.1-SNAPSHOT</version>
 	<name>JIRA Notifier</name>
 	<build>
         <plugins>
@@ -27,8 +27,8 @@
 		</plugins>
 	</build>
 	<scm>
-		<connection>scm:svn:http://chrome-jira-notifier.googlecode.com/svn/tags/chrome-jira-notifier-2.0.3</connection>
-		<developerConnection>scm:svn:https://chrome-jira-notifier.googlecode.com/svn/tags/chrome-jira-notifier-2.0.3</developerConnection>
-		<url>https://chrome-jira-notifier.googlecode.com/svn/tags/chrome-jira-notifier-2.0.3</url>
+		<connection>scm:svn:http://chrome-jira-notifier.googlecode.com/svn/trunk</connection>
+		<developerConnection>scm:svn:https://chrome-jira-notifier.googlecode.com/svn/trunk</developerConnection>
+		<url>https://chrome-jira-notifier.googlecode.com/svn/trunk</url>
 	</scm>
 </project>
