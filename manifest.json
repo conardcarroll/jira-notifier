@@ -1,6 +1,6 @@
 ﻿{
 	"name": "JIRA Notifier",
-	"version": "${project.version}",
+	"version": "2.1",
 	"description": "Checks JIRA for issues assigned to you.",
 	"permissions": [ "tabs", "http://*/*", "https://*/*", "history" ],
 	"icons": {
