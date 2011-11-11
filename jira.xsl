@@ -107,6 +107,12 @@
                 </img>
             </td>
             <td class="bold link" align="center">
+                <xsl:attribute name="title">
+                    <xsl:value-of select="substring(description, 0, $descLen)"/>
+					<xsl:if test="string-length(description) &gt; $descLen">
+						<xsl:text>...</xsl:text>
+					</xsl:if>
+                </xsl:attribute>
                 <xsl:attribute name="onclick">
                     <xsl:text>openJiraTab('</xsl:text>
                     <xsl:value-of select="link"/>
@@ -117,12 +123,6 @@
                 </span>
             </td>
             <td class="link">
-                <xsl:attribute name="title">
-                    <xsl:value-of select="substring(description, 0, $descLen)"/>
-					<xsl:if test="string-length(description) &gt; $descLen">
-						<xsl:text>...</xsl:text>
-					</xsl:if>
-                </xsl:attribute>
                 <xsl:attribute name="onclick">
                     <xsl:text>openJiraTab('</xsl:text>
                     <xsl:value-of select="link"/>
