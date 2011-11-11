@@ -52,6 +52,7 @@ function updateJiraSelect(jiraUrl) {
 			return b.visitCount - a.visitCount;
 		});
 		$jiraSelect.children().remove();
+		var found = false;
 		for (var i = 0; i < results.length; i++) {
 			var historyItem = results[i];
 			var url = historyItem.url;
@@ -59,11 +60,18 @@ function updateJiraSelect(jiraUrl) {
 			if (url && title && url.indexOf('/secure/Dashboard') != -1) {
 				title = title.substring(title.lastIndexOf('-') + 2);
 				url = url.substring(0, url.lastIndexOf('/secure'));
+				if (url == jiraUrl) {
+					found = true;
+				}
 				$jiraSelect.append($('<option></option>').val(url).html(title));
 			}
 		}
-		$jiraSelect.val(jiraUrl);
-		jiraUrl = $jiraSelect.val();
+		if (found) {
+			$jiraSelect.val(jiraUrl);
+			jiraUrl = $jiraSelect.val();
+		} else {
+			toggleJira();
+		}
 		$jiraSelect.removeAttr('disabled');
 		$spinner.hide();
 		updateFilters(jiraUrl);
