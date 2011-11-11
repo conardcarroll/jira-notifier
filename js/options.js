@@ -42,12 +42,15 @@ function restoreOptions() {
 }
 
 function updateJiraSelect(jiraUrl) {
+	var $jiraSelect = $('#jira-url-select');
+	$jiraSelect.attr('disabled', 'disabled');
+	var $spinner = $('#spinner');
+	$spinner.show()
 	var query = { 'text': 'jira AND secure', 'startTime': 0 };
 	chrome.history.search(query, function(results) {
 		results.sort(function(a, b) {
 			return b.visitCount - a.visitCount;
-		});	
-		var $jiraSelect = $('#jira-url-select');
+		});
 		$jiraSelect.children().remove();
 		for (var i = 0; i < results.length; i++) {
 			var historyItem = results[i];
@@ -61,6 +64,8 @@ function updateJiraSelect(jiraUrl) {
 		}
 		$jiraSelect.val(jiraUrl);
 		jiraUrl = $jiraSelect.val();
+		$jiraSelect.removeAttr('disabled');
+		$spinner.hide();
 		updateFilters(jiraUrl);
 		$('#jira-url').val(jiraUrl);
 	});
@@ -68,6 +73,7 @@ function updateJiraSelect(jiraUrl) {
 
 function updateFilters(url) {		
 	var $filters = $('#filters');
+	$filters.attr('disabled', 'disabled');
 	$filters.children().remove();
 	
 	$.ajax({
@@ -150,7 +156,8 @@ function requestNotifications() {
 function toggleJira() {
 	$('#jira-url').toggle();
 	$('#jira-url-select').toggle();
-	$('#toggle-jira').html('Select JIRA from history');
+	$('#toggle-jira').toggle();
+	$('#toggle-jira-select').toggle();
 }
 
 function stripUrl(url) {
